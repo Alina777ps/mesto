@@ -3,6 +3,7 @@
     height: 50px;
     background-image: url(../../../images/Save-Button.png);
     display: block;
+    cursor: pointer;
 }
 
 .popup__save:hover {

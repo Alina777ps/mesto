@@ -8,6 +8,8 @@
     position: absolute;
     right: 0;
     top: 15px;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 .profile__edit-button:hover {
