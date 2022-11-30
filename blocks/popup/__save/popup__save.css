@@ -1,0 +1,19 @@
+.popup__save {
+    width: 358px;
+    height: 50px;
+    background-image: url(../../../images/Save-Button.png);
+    display: block;
+}
+
+.popup__save:hover {
+    opacity: .8;
+    transform: opacity .3s ease;
+}
+
+@media screen and (max-width: 570px) {
+    .popup__save {
+        width: 238px;
+        height: 46px;
+        background-image: url(../../../images/Save\ Button\ mobile.png);
+    }
+}
