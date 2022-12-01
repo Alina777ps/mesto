@@ -1,11 +1,11 @@
-let formElement = document.querySelector(".popup__form");
-let popup = document.querySelector(".popup");
-let popupCloseIcon = document.querySelector(".popup__close-icon");
-let profileEditButton = document.querySelector(".profile__edit-button");
-let nameInput = document.querySelector(".popup__input_name");
-let jobInput = document.querySelector(".popup__input_job");
-let profileTitle = document.querySelector(".profile__title");
-let profileSubtitle = document.querySelector(".profile__subtitle");
+const formElement = document.querySelector(".popup__form");
+const popup = document.querySelector(".popup");
+const popupCloseIcon = document.querySelector(".popup__close-icon");
+const profileEditButton = document.querySelector(".profile__edit-button");
+const nameInput = document.querySelector(".popup__input_type_name");
+const jobInput = document.querySelector(".popup__input_type_job");
+const profileTitle = document.querySelector(".profile__title");
+const profileSubtitle = document.querySelector(".profile__subtitle");
 
 function popupOpen() {
     popup.classList.add("popup_opened")

@@ -2,7 +2,7 @@
     margin: 0 200px;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(3, 282px);
+    grid-template-columns: repeat(3, minmax(min-content, max-content));
     grid-template-rows: repeat(auto-fit, 361px);
     gap: 20px 17px;
     justify-content: center;
@@ -12,7 +12,7 @@
     .elements {
         margin-left: 15vw;
         margin-right: 15vw;
-        grid-template-columns: repeat(2, 282px);
+        grid-template-columns: repeat(2, minmax(min-content, max-content));
     }
 }
 
