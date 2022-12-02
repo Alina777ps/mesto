@@ -1,5 +1,5 @@
 .profile__edit-button {
-    margin: 0 0 9px 0;
+    margin: 0;
     padding: 0;
     background-color: transparent;
     border: none;
@@ -8,7 +8,7 @@
     background: url(../../../images/edit-button.svg);
     cursor: pointer;
     grid-area: edit-button;
-    align-self: end;
+    align-self: center;
 }
 
 .profile__edit-button:hover {
@@ -21,7 +21,7 @@
         width: 18px;
         height: 18px;
         background: url(../../../images/Edit\ Button-mobile.svg);
-        margin-bottom: 7px;
+        
     }
     
 }

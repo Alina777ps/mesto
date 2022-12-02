@@ -1,5 +1,5 @@
 .profile {
-    margin: 0 200px 60px;
+    margin: 0 200px 47.25px;
     padding: 0;
     display: flex;
     justify-content: space-between;
@@ -18,7 +18,7 @@
         margin: 0 19px 36px;
         flex-direction: column;
         justify-content: center;
-        gap: 20px;
+        gap: 36px;
     
     }
     
