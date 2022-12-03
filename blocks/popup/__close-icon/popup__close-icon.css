@@ -9,6 +9,7 @@
     top: -40px;
     box-sizing: border-box;
     cursor: pointer;
+    background-repeat: no-repeat;
 }
 
 .popup__close-icon:hover {
