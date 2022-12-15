@@ -1,7 +1,7 @@
-const formElement = document.querySelector(".popup__form");
 const popup = document.querySelector(".popup");
 const popupEditProfile = document.querySelector(".popup__edit-profile");
 const popupAddProfile = document.querySelector(".popup__add-profile");
+const popupFormEdit = popupEditProfile.querySelector(".popup__form");
 const closePopupEdit = popupEditProfile.querySelector(".popup__close-icon");
 const closePopupAdd = popupAddProfile.querySelector(".popup__close-icon");
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -45,7 +45,7 @@ closePopupAdd.addEventListener("click", () => {
   popupClose(popupAddProfile)
 });
 
-formElement.addEventListener("submit", handleFormSubmit);
+popupFormEdit.addEventListener("submit", handleFormSubmit);
 
 const initialCards = [
     {
@@ -93,16 +93,16 @@ const initialCards = [
   })
 
   const titleInput =  document.querySelector(".popup__input_type_title");
-  const pitureInput = document.querySelector(".popup__input_type_piture");
-  const saveAddItem =  document.querySelector(".popup__save_add-item");
+  const pictureInput = document.querySelector(".popup__input_type_picture");
+  const popupFormAddItem = popupAddProfile.querySelector(".popup__form");
 
   const addCard = (event) => {
     event.preventDefault();
-    const elementLink =  pitureInput.value;
+    const elementLink =  pictureInput.value;
     const elementName = titleInput.value;
     renderElement(elementLink, elementName);
-    saveAddItem.reset()
+    popupFormAddItem.reset()
     popupClose(popupAddProfile)
   }
 
-  saveAddItem.addEventListener("submit", addCard);
+  popupFormAddItem.addEventListener("submit", addCard);
