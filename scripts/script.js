@@ -1,5 +1,4 @@
 //попапы
-const popups = document.querySelector(".popup");
 const popupEditProfile = document.querySelector(".popup-edit-profile");
 const popupAddProfile = document.querySelector(".popup-add-profile");
 const popupImage = document.querySelector(".popup-image")
@@ -54,12 +53,12 @@ const initialCards = [
     }
   ];
 
-  function popupOpen(popups) {
-    popups.classList.add("popup_opened")
+  function popupOpen(popup) {
+    popup.classList.add("popup_opened")
   }
   
-  function popupClose(popups) {
-    popups.classList.remove("popup_opened")
+  function popupClose(popup) {
+    popup.classList.remove("popup_opened")
   }
   
   function submitProfileForm(evt) {
