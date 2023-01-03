@@ -89,27 +89,6 @@ const validationConfig = {
     return element;
   }
 
-  /*const creatCard = (elementLink, elementName) => {
-    const element = template.content.querySelector('.element').cloneNode(true);
-    element.querySelector('.element__mask-group').src = elementLink;
-    element.querySelector('.element__title').textContent = elementName;
-    element.querySelector('.element__mask-group').alt = elementName;
-    element.querySelector(".element__trash").addEventListener("click", () => {
-      element.remove();
-    })
-    element.querySelector('.element__mask-group').addEventListener("click", () => {
-      popupImage.querySelector(".popup__mask-group").src =  elementLink;
-      popupImage.querySelector(".popup__mask-group").alt =  elementName;
-      popupImage.querySelector(".popup__caption").textContent = elementName;
-      openPopup(popupImage);
-    });
-
-    element.querySelector('.element__like-button').addEventListener("click", (event) => {
-      event.target.classList.toggle("element__like-button_active")});
-
-    return element;
-  }*/
-
 
   const renderElement = (elementLink, elementName) => {
     elements.prepend(creatCard(elementLink, elementName));
@@ -130,11 +109,6 @@ const validationConfig = {
     buttonSave.disabled = true;
     closePopup(popupAddProfile)
   }
-
-
-function closePopupOverlay(evt) {
-    evt.target === evt.currentTarget
-}
 
 //закрытие попапа по оверлею
 function closePopupOverlay(evt) {
