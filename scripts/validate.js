@@ -1,9 +1,5 @@
-/*function disableSubmitButton(buttonElement) {
-    const buttonSave = formElement.querySelector(config.submitButtonSelector)
-    buttonSave.classList.add(config.inactiveButtonClass);
-    buttonSave.disabled = true;
-}*/
-
+import { validationConfig } from "./validationConfig.js";
+//показать ошибку ввода
 function showInputError(formElement, inputElement, config) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
@@ -11,7 +7,7 @@ function showInputError(formElement, inputElement, config) {
     errorElement.textContent = inputElement.validationMessage;
     inputElement.classList.add(config.inputErrorClass);
 }
-
+//скрыть ошибку ввода
 function hideInputError(formElement, inputElement, config) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
@@ -19,7 +15,7 @@ function hideInputError(formElement, inputElement, config) {
     errorElement.textContent = "";
     inputElement.classList.remove(config.inputErrorClass);
 }
-
+//проверка правильности ввода
 function checkInputValidity(formElement, inputElement, config) {
     if (inputElement.validity.valid) {
         hideInputError(formElement, inputElement, config);
@@ -27,11 +23,11 @@ function checkInputValidity(formElement, inputElement, config) {
         showInputError(formElement, inputElement, config);
     }
 }
-
+//невалидный ввод
 function hasInvalidInput(inputList) {
     return inputList.some((inputElement) => !inputElement.validity.valid);
 }
-
+//перключатель состояния кнопки
 function toggleButtonState(inputList, buttonElement, config) {
     if (hasInvalidInput(inputList)) {
         buttonElement.classList.add(config.inactiveButtonClass);
@@ -41,7 +37,7 @@ function toggleButtonState(inputList, buttonElement, config) {
         buttonElement.disabled = false;
     }
 }
-
+//прослушиватеь событий
 function setEventListeners(formElement, config) {
     const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
     const buttonElement = formElement.querySelector(config.submitButtonSelector);
@@ -55,7 +51,7 @@ function setEventListeners(formElement, config) {
         })
     })
 }
-
+//включить валидацию
 function enableValidation(config) {
     const formList = Array.from(document.querySelectorAll(config.formSelector))
 
