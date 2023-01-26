@@ -35,7 +35,7 @@ export class Card {
         });
         this._element.querySelector('.element__like-button').addEventListener("click", (event) => {
             event.target.classList.toggle("element__like-button_active")});
-        this._element.querySelector('.element__mask-group').addEventListener("click", () =>
+            this._cardImage.addEventListener("click", () =>
             this._openPopupImage(this._title, this._image))
       }
       }
