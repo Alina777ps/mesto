@@ -1,8 +1,11 @@
+
 //импорты
-import { Card } from "./Card.js";
-import { initialCards } from "./initialCards.js";
-import { validationConfig } from "./validationConfig.js";
-import { FormValidator } from "./FormValidator.js";
+import "./index.css";
+
+import { Card } from "../scripts/Card.js";
+import { initialCards } from "../scripts/initialCards.js";
+import { validationConfig } from "../scripts/validationConfig.js";
+import { FormValidator } from "../scripts/FormValidator.js";
 
 //попапы
 const popups = document.querySelectorAll(".popup");
