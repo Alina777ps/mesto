@@ -2,11 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { watchFile } = require('fs');
 
 module.exports = {
   entry: {
     main: './src/pages/index.js'
   },
+  devtool: 'inline-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
@@ -17,7 +19,8 @@ module.exports = {
     static: path.resolve(__dirname, './dist'),
     open: true,
     compress: true,
-    port: 8080
+    port: 8080,
+    watchFiles: ['src/**/*.html']
   },
   module: {
     rules: [{

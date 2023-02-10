@@ -1,11 +1,14 @@
-
 //импорты
 import "./index.css";
 
-import { Card } from "../scripts/Card.js";
-import { initialCards } from "../scripts/initialCards.js";
-import { validationConfig } from "../scripts/validationConfig.js";
-import { FormValidator } from "../scripts/FormValidator.js";
+import { Card } from "../copmonents/Card.js";
+import { initialCards } from "../copmonents/initialCards.js";
+import { validationConfig } from "../copmonents/validationConfig.js";
+import { FormValidator } from "../copmonents/FormValidator.js";
+import Section from "../copmonents/Section.js";
+import PopupWithImage from "../copmonents/PopupWithImage.js"
+import PopupWithForm from "../copmonents/PopupWithForm.js";
+import UserInfo from "../copmonents/UserInfo.js";
 
 //попапы
 const popups = document.querySelectorAll(".popup");
@@ -16,8 +19,8 @@ const popupImage = document.querySelector(".popup-image");
 const popupFormEdit = document.forms.popupFormEdit;
 const popupFormAddItem = document.forms.popupFormAddItem;
 //кнопки редактирования и добавления
-const profileEditButton = document.querySelector(".profile__edit-button");
-const profileAddButton = document.querySelector(".profile__add-button");
+const editButton = document.querySelector(".profile__edit-button");
+const addButton = document.querySelector(".profile__add-button");
 //инпуты профиля
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_job");
@@ -28,11 +31,92 @@ const profileSubtitle = document.querySelector(".profile__subtitle");
 const elements = document.querySelector(".elements");
 //инпуты добавления карточек
 const titleInput = document.querySelector(".popup__input_type_title");
-const pictureInput = document.querySelector(".popup__input_type_picture");
+const pictureInput = document.querySelector(".popup__input_type_image");
 
 const popupMaskGroup = document.querySelector(".popup__mask-group");
 const popupCaption = document.querySelector(".popup__caption");
 
+
+//открытие и закрытие попапа с картинкой
+const newPopupImage = new PopupWithImage(popupImage);
+
+function openImage() {
+  newPopupImage.open(popupMaskGroup, popupCaption);
+}
+
+newPopupImage.setEventListeners();
+
+ 
+function createCard(item) {
+  const card = new Card(item, "#template", openImage).generateCard();
+  return card;
+}
+
+//отрисовка карточек на странице из массива
+const cardList = new Section({ items: initialCards, renderer: (item) => {
+  cardList.addItem(createCard(item))
+  } }, elements);
+  cardList.renderItems();
+
+//попап добавления
+const newPopupAdd = new PopupWithForm(popupAddProfile, (item) => {
+  cardList.addItem(createCard(item))
+});
+
+addButton.addEventListener("click", () => {
+  newPopupAdd.open();
+  validationPopupAdd.resetValidation();
+});
+
+newPopupAdd.setEventListeners();
+
+
+//попап редактирования
+const newPopupEdit = new PopupWithForm(popupEditProfile, (item) => {
+  editUsernfo.getUserInfo(nameInput, jobInput);
+});
+
+const editUsernfo = new UserInfo(profileTitle, profileSubtitle);
+
+editButton.addEventListener("click", () => {
+  newPopupEdit.open();
+  validationPopupEdit.resetValidation();
+  editUsernfo.setUserInfo(nameInput, jobInput);
+});
+
+newPopupEdit.setEventListeners();
+
+
+//валидация
+const validationPopupEdit = new FormValidator(validationConfig, popupFormEdit);
+validationPopupEdit.enableValidation();
+
+const validationPopupAdd = new FormValidator(validationConfig, popupFormAddItem);
+validationPopupAdd.enableValidation();
+
+
+/*
+//конфиг форм
+const formValidators = {};
+
+// Включение валидации
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    const formName = formElement.getAttribute("name");
+
+    //объект записываем под именем формы
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(validationConfig);
+*/
+
+
+/*
 //открытие попапа
 function openPopup(popup) {
   document.addEventListener("keydown", handleEscDown);
@@ -65,7 +149,6 @@ popups.forEach((popup) => {
   });
 });
 
-//
 function submitProfileForm(evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
@@ -81,10 +164,7 @@ function openImage(title, image) {
   openPopup(popupImage);
 }
 
-function createCard(item) {
-  const card = new Card(item, "#template", openImage).generateCard();
-  return card;
-}
+
 
 function renderCard(card, elements) {
   elements.prepend(card);
@@ -111,23 +191,6 @@ const addCard = (event) => {
   closePopup(popupAddProfile);
 };
 
-const formValidators = {};
-
-// Включение валидации
-const enableValidation = (config) => {
-  const formList = Array.from(document.querySelectorAll(config.formSelector));
-  formList.forEach((formElement) => {
-    const validator = new FormValidator(config, formElement);
-    const formName = formElement.getAttribute("name");
-
-    // вот тут в объект записываем под именем формы
-    formValidators[formName] = validator;
-    validator.enableValidation();
-  });
-};
-
-enableValidation(validationConfig);
-
 popupFormAddItem.addEventListener("submit", addCard);
 
 profileEditButton.addEventListener("click", () => {
@@ -142,3 +205,4 @@ profileAddButton.addEventListener("click", () => {
 });
 
 popupFormEdit.addEventListener("submit", submitProfileForm);
+*/
