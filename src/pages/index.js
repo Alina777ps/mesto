@@ -2,7 +2,7 @@
 import "./index.css";
 
 import { Card } from "../copmonents/Card.js";
-import { initialCards } from "../copmonents/initialCards.js";
+import { initialCards } from "../utils/initialCards.js";
 import { validationConfig } from "../copmonents/validationConfig.js";
 import { FormValidator } from "../copmonents/FormValidator.js";
 import Section from "../copmonents/Section.js";
@@ -36,6 +36,13 @@ const pictureInput = document.querySelector(".popup__input_type_image");
 const popupMaskGroup = document.querySelector(".popup__mask-group");
 const popupCaption = document.querySelector(".popup__caption");
 
+//валидация
+const validationPopupEdit = new FormValidator(validationConfig, popupFormEdit);
+validationPopupEdit.enableValidation();
+
+const validationPopupAdd = new FormValidator(validationConfig, popupFormAddItem);
+validationPopupAdd.enableValidation();
+
 
 //открытие и закрытие попапа с картинкой
 const newPopupImage = new PopupWithImage(popupImage);
@@ -63,36 +70,40 @@ const newPopupAdd = new PopupWithForm(popupAddProfile, (item) => {
   cardList.addItem(createCard(item))
 });
 
-addButton.addEventListener("click", () => {
-  newPopupAdd.open();
+function openPopupAdd() {
   validationPopupAdd.resetValidation();
-});
+  newPopupAdd.open();
+}
+
+addButton.addEventListener("click", openPopupAdd);
 
 newPopupAdd.setEventListeners();
 
 
 //попап редактирования
-const newPopupEdit = new PopupWithForm(popupEditProfile, (item) => {
-  editUsernfo.getUserInfo(nameInput, jobInput);
-});
+const editUserInfo = new UserInfo({ name: profileTitle, job: profileSubtitle });
 
-const editUsernfo = new UserInfo(profileTitle, profileSubtitle);
+function formValues(value) {
+  editUserInfo.setUserInfo(value.name, value.job);
+  newPopupEdit.close();
+}
 
-editButton.addEventListener("click", () => {
-  newPopupEdit.open();
+const newPopupEdit = new PopupWithForm(popupEditProfile, formValues);
+
+function openPopupEdit() {
   validationPopupEdit.resetValidation();
-  editUsernfo.setUserInfo(nameInput, jobInput);
-});
+  //editUserInfo.getUserInfo(nameInput, jobInput);
+  const { name, job } = editUserInfo.getUserInfo()
+  nameInput.value = name
+  jobInput.value = job
+  newPopupEdit.open();
+}
+
+editButton.addEventListener("click", openPopupEdit);
 
 newPopupEdit.setEventListeners();
 
 
-//валидация
-const validationPopupEdit = new FormValidator(validationConfig, popupFormEdit);
-validationPopupEdit.enableValidation();
-
-const validationPopupAdd = new FormValidator(validationConfig, popupFormAddItem);
-validationPopupAdd.enableValidation();
 
 
 /*
