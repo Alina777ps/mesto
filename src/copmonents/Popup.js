@@ -1,4 +1,3 @@
-
 export default class Popup {
     constructor(selectorPopup) {
         this._selectorPopup = selectorPopup;
@@ -31,9 +30,6 @@ export default class Popup {
                 this.close();
             }
           });
-    }
-
-    
-        
-     
+    } 
 }
+

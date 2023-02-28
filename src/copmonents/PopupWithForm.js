@@ -4,11 +4,19 @@ export default class PopupWithForm extends Popup {
     constructor(selectorPopup, sabmitForm) {
         super(selectorPopup);
         this._sabmitForm = sabmitForm;
-        //this._form = document.forms.this._selectorPopup;
         this._form = this._selectorPopup.querySelector(".popup__form");
-        this._inputs = Array.from(document.querySelectorAll(".popup__input"));
+        this._inputs = Array.from(this._form.querySelectorAll(".popup__input"));
+        this._form.addEventListener("submit", (event) => {
+          event.preventDefault()
+          const loadingText = event.submitter.textContent
+          event.submitter.textContent = "Сохранение..."
+          this._sabmitForm(this._getInputValues())
+            .then(() => this.close())
+            .finally(() => {
+              event.submitter.textContent = loadingText
+            })
+        })
     }
-//собирает данные всех полей формы
     _getInputValues() {
         this._inputValues = {}
         this._inputs.forEach((input) => {
@@ -16,20 +24,10 @@ export default class PopupWithForm extends Popup {
           })
           return this._inputValues
     }
-
-    setEventListeners() {
-        super.setEventListeners();
-        //обработчик сабмита формы
-        this._form.addEventListener("submit", (event) => {
-            event.preventDefault()
-      
-            this._sabmitForm(this._getInputValues());
-            this.close()
-          })
-        }
-
+   
     close() {
         super.close();
         this._form.reset();
     }
+
 }

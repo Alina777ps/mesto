@@ -5,21 +5,12 @@ export default class PopupWithImage extends Popup {
         super(selectorPopup);
     }
 
-    open(popupImage, popupTitle) {
+    open(name, link) {
         super.open();
-        this._cardImage = document.querySelector('.element__mask-group');
+        this._cardImage = document.querySelector('.popup__mask-group');
         
-        popupImage.src = this._cardImage.src;
-        popupTitle.alt = this._cardImage.alt;
-        popupTitle.textContent = document.querySelector('.element__title').textContent;
+        this._cardImage.src = link;
+        this._cardImage.alt = name;
+        document.querySelector('.popup__caption').textContent = name;
     }
-
-    close() {
-        super.close();
-    }
-
-    setEventListeners() {
-        super.setEventListeners()
-    }
-
 }
