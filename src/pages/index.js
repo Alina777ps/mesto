@@ -1,100 +1,218 @@
 //импорты
-import "./index.css";
-
-import { Card } from "../copmonents/Card.js";
-import { initialCards } from "../utils/initialCards.js";
-import { validationConfig } from "../copmonents/validationConfig.js";
-import { FormValidator } from "../copmonents/FormValidator.js";
-import Section from "../copmonents/Section.js";
+import "./index.css"
+import { Card } from "../copmonents/Card.js"
+import { validationConfig } from "../copmonents/validationConfig.js"
+import { FormValidator } from "../copmonents/FormValidator.js"
+import Section from "../copmonents/Section.js"
 import PopupWithImage from "../copmonents/PopupWithImage.js"
-import PopupWithForm from "../copmonents/PopupWithForm.js";
-import UserInfo from "../copmonents/UserInfo.js";
+import PopupWithForm from "../copmonents/PopupWithForm.js"
+import UserInfo from "../copmonents/UserInfo.js"
+import Api from "../copmonents/Api.js"
+import PopupConfirmation from "../copmonents/PopupConfirmation.js"
 
 //попапы
 const popupEditProfile = document.querySelector(".popup-edit-profile");
 const popupAddProfile = document.querySelector(".popup-add-profile");
 const popupImage = document.querySelector(".popup-image");
+const popupAvatar = document.querySelector(".popup-avatar-edit");
+const popupConfirmationDelete = document.querySelector(".popup-confirmation");
 //формы попапов
-const popupFormEdit = document.forms.popupFormEdit;
-const popupFormAddItem = document.forms.popupFormAddItem;
+const popupFormEdit = document.forms.popupFormEdit
+const popupFormAddItem = document.forms.popupFormAddItem
+const popupFormUpdateAvatar = document.forms.popupAvatarEdit
 //кнопки редактирования и добавления
-const editButton = document.querySelector(".profile__edit-button");
-const addButton = document.querySelector(".profile__add-button");
+const editButton = document.querySelector(".profile__edit-button")
+const addButton = document.querySelector(".profile__add-button")
+const avatarButton = document.querySelector(".profile__avatar-edit")
 //инпуты профиля
-const nameInput = document.querySelector(".popup__input_type_name");
-const jobInput = document.querySelector(".popup__input_type_job");
+const nameInput = document.querySelector(".popup__input_type_name")
+const aboutInput = document.querySelector(".popup__input_type_about")
 //поля профиля
-const profileTitle = document.querySelector(".profile__title");
-const profileSubtitle = document.querySelector(".profile__subtitle");
+const nameProfile = document.querySelector(".profile__title")
+const aboutProfile = document.querySelector(".profile__subtitle")
+const avatarProfile = document.querySelector(".profile__avatar")
 
-const elements = document.querySelector(".elements");
+const elements = document.querySelector(".elements")
 
-const popupMaskGroup = document.querySelector(".popup__mask-group");
-const popupCaption = document.querySelector(".popup__caption");
+let userId
 
-//валидация
-const validationPopupEdit = new FormValidator(validationConfig, popupFormEdit);
-validationPopupEdit.enableValidation();
-
-const validationPopupAdd = new FormValidator(validationConfig, popupFormAddItem);
-validationPopupAdd.enableValidation();
-
-
-//открытие и закрытие попапа с картинкой
+//создание экземпляров класса PopupWithForm
 const newPopupImage = new PopupWithImage(popupImage);
 
-function openImage() {
-  newPopupImage.open(popupMaskGroup, popupCaption);
+const newPopupAdd = new PopupWithForm(popupAddProfile, submitFormAddCard);
+
+const newPopupEdit = new PopupWithForm(popupEditProfile, submitFormEditProfile);
+
+const newPopupAvatar = new PopupWithForm(popupAvatar, submitFormUpdateAvatar);
+
+const user = new UserInfo({
+  name: nameProfile,
+  about: aboutProfile,
+  avatar: avatarProfile,
+})
+
+console.log(user)
+
+//Открытие попапа картинки
+function openImage(name, link) {
+  newPopupImage.open(name, link)
+  newPopupImage.setEventListeners()
 }
 
-newPopupImage.setEventListeners();
+//создание карточек
+function createCard(data) {
+  const card = new Card(
+    data,
+    "#template",
+    openImage,
+    userId,
+    async () => {
+      try {
+        const res = await api.addLike(data._id)
+        card.like()
+        card.likesCount(res)
+      } catch (error) {
+        return console.log(`Произошла ошибка: ${error}`)
+      }
+    },
+    async () => {
+      try {
+        const res = await api.removeLike(data._id)
+        card.dislike()
+        card.likesCount(res)
+      } catch (error) {
+        return console.log(`Произошла ошибка: ${error}`)
+      }
+    },
+    () => {
+      newpopupConfirmation.open(card)
+      newpopupConfirmation.setEventListeners()
+    }
+  )
 
- 
-function createCard(item) {
-  const card = new Card(item, "#template", openImage).generateCard();
-  return card;
+  return card.generateCard()
 }
 
-//отрисовка карточек на странице из массива
-const cardList = new Section({ items: initialCards, renderer: (item) => {
-  cardList.addItem(createCard(item))
-  } }, elements);
-  cardList.renderItems();
-
-//попап добавления
-const newPopupAdd = new PopupWithForm(popupAddProfile, (item) => {
-  cardList.addItem(createCard(item))
-});
-
-function openPopupAdd() {
-  validationPopupAdd.resetValidation();
-  newPopupAdd.open();
+//добавление карточек
+async function submitFormAddCard(data) {
+  try {
+    const newCard = await api.addNewCard(data)
+    cardList.addItem(createCard(newCard))
+  } catch (error) {
+    return console.log(`Произошла ошибка: ${error}`)
+  }
 }
 
-addButton.addEventListener("click", openPopupAdd);
-
-newPopupAdd.setEventListeners();
-
-
-//попап редактирования
-const editUserInfo = new UserInfo({ name: profileTitle, job: profileSubtitle });
-
-function formValues(value) {
-  editUserInfo.setUserInfo(value.name, value.job);
-  newPopupEdit.close();
+//редактирование профиля
+async function submitFormEditProfile(data) {
+  try {
+    const userProfile = await api.editProfile(data)
+    user.setUserInfo(userProfile)
+  } catch (error) {
+    return console.log(`Произошла ошибка: ${error}`)
+  }
 }
 
-const newPopupEdit = new PopupWithForm(popupEditProfile, formValues);
-
-function openPopupEdit() {
-  validationPopupEdit.resetValidation();
-  //editUserInfo.getUserInfo(nameInput, jobInput);
-  const { name, job } = editUserInfo.getUserInfo()
-  nameInput.value = name
-  jobInput.value = job
-  newPopupEdit.open();
+//изменение аватара
+async function submitFormUpdateAvatar(data) {
+  try {
+    const userProfile = await api.updateAvatar(data)
+    user.setUserInfo(userProfile)
+  } catch (error) {
+    return console.log(`Произошла ошибка: ${error}`)
+  }
 }
 
-editButton.addEventListener("click", openPopupEdit);
+editButton.addEventListener(
+  "click",
+  () => {
+    newPopupEdit.open()
+    newPopupEdit.setEventListeners(user.getUserInfo())
+    validationPopupEdit.resetValidation()
+    const { name, about } = user.getUserInfo()
+    nameInput.value = name
+    aboutInput.value = about
+  },
+  false
+)
 
-newPopupEdit.setEventListeners();
+avatarButton.addEventListener(
+  "click",
+  () => {
+    newPopupAvatar.open()
+    validatorUpdateAvatar.resetValidation()
+    newPopupAvatar.setEventListeners()
+  },
+  false
+)
+
+addButton.addEventListener(
+  "click",
+  () => {
+    newPopupAdd.open()
+    newPopupAdd.setEventListeners()
+    validationPopupAdd.resetValidation()
+  },
+  false
+)
+
+//валидация
+const validationPopupEdit = new FormValidator(validationConfig, popupFormEdit)
+validationPopupEdit.enableValidation()
+
+const validationPopupAdd = new FormValidator(validationConfig, popupFormAddItem)
+validationPopupAdd.enableValidation()
+
+const validatorUpdateAvatar = new FormValidator(
+  validationConfig,
+  popupFormUpdateAvatar
+)
+validatorUpdateAvatar.enableValidation()
+
+//создание попапа подтверждение удаления
+const newpopupConfirmation = new PopupConfirmation(
+  popupConfirmationDelete,
+  async (card) => {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        card.remove()
+        newpopupConfirmation.close()
+      })
+      .catch((error) => console.log(`Произошла ошибка: ${error}`))
+  }
+)
+
+// Загружка карточек с сервера
+const cardList = new Section(
+  {
+    renderer: (data) => {
+      const card = createCard(data)
+
+      cardList.addItem(card)
+    },
+  },
+  elements
+)
+
+const config = {
+  url: 'https://mesto.nomoreparties.co/v1/cohort-60',
+  headers: {
+    authorization: 'e0bed1d8-4343-452c-a8c4-4d68365fbfac',
+    "Content-Type": "application/json",
+  }
+}
+
+const api = new Api(config);
+
+
+//отрисовка карточек и данных пользователя с сервера
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userProfile, cards]) => {
+    user.setUserInfo(userProfile)
+    userId = userProfile._id
+    cardList.renderItems(cards)
+  })
+
+  .catch((error) => console.log(`Произошла ошибка: ${error}`))
+  
