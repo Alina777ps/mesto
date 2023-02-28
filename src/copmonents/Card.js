@@ -86,27 +86,6 @@ export class Card {
       } else {
         this._like();
       }
-<<<<<<< HEAD
-      
-      _setEventListeners() {
-        this._element.querySelector(".element__trash").addEventListener("click", () => {
-            this._element.remove();
-        });
-        this._element.querySelector('.element__like-button').addEventListener("click", (event) => {
-            event.target.classList.toggle("element__like-button_active")});
-        this._cardImage.addEventListener("click", () =>
-            this._handleCardClick(this._title, this._image))
-      }
-      }
-
-      
-
-      
-
-      
-    
-    
-=======
     });
     this._buttonTrash.addEventListener("click", () => {
       this._deleteCard(this._id);
@@ -116,4 +95,3 @@ export class Card {
     });
   }
 }
->>>>>>> develop
