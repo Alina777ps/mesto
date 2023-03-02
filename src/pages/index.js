@@ -56,6 +56,7 @@ console.log(user);
 //Открытие попапа картинки
 function openImage(name, link) {
   newPopupImage.open(name, link);
+  //newPopupImage.setEventListeners() 
 }
 
 //создание карточек
