@@ -51,8 +51,6 @@ const user = new UserInfo({
   avatar: avatarProfile,
 });
 
-console.log(user);
-
 //Открытие попапа картинки
 function openImage(name, link) {
   newPopupImage.open(name, link);
